@@ -22,7 +22,7 @@ function Ball(x, y) {
   this.x = x;
   this.y = y;
   this.radius = 10;
-  this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
+  this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5));
   this.y_speed = 0;
 }
 
@@ -33,6 +33,7 @@ var ball = new Ball(590, 290);
 
 var update = function() {
   player.update();
+  computer.update(ball);    
   ball.update(player.paddle, computer.paddle);    
 };
 
@@ -72,13 +73,12 @@ window.addEventListener("keyup", function(event) {
 
 Paddle.prototype.move = function(y) {
   this.y += y;
-
   this.y_speed = y;
 
-  if(this.y < 0) { // all the way to the left
+  if(this.y < 0) { 
     this.y = 0;
     this.y_speed = 0;
-  } else if (this.y + this.height > 600) { // all the way to the right
+  } else if (this.y + this.height > 600) {
     this.y = 600 - this.height;
     this.y_speed = 0;
   }    
@@ -94,6 +94,22 @@ Player.prototype.update = function() {
     } else {
       this.paddle.move(0);
     }
+  }
+};
+
+Computer.prototype.update = function(ball) {
+  var y_position = ball.y;
+  var difference = -((this.paddle.y + (this.paddle.height / 2)) - y_position);
+  if(difference < 0 && difference < -4) {
+    difference = -5;
+  } else if(difference > 0 && difference > 4) {
+    difference = 5;
+  }
+  this.paddle.move(difference, 0);
+  if(this.paddle.y < 0) {
+    this.paddle.y = 0;
+  } else if (this.paddle.y + this.paddle.height > 600) {
+    this.paddle.x = 600 - this.paddle.height;
   }
 };
 
@@ -116,21 +132,23 @@ Ball.prototype.update = function(paddle1, paddle2){
   }    
     
   if(this.x < 0 || this.x > 1200) { // a point was scored
-    this.x_speed = 5;
-    this.y_speed = 5;
+    /*this.x_speed = 5;
+    this.y_speed = 5;*/
+  this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
+  this.y_speed = 0;      
     this.x = 590;
     this.y = 290;
   }    
 
   if(right_x < 600) {
-    if(right_x > paddle1.x && left_x < (paddle1.x + paddle1.width) && top_y > paddle1.y && bottom_y < (paddle1.y + paddle1.height)) {
+    if(right_x > paddle1.x && left_x < (paddle1.x + paddle1.width) && top_y > (paddle1.y-15) && bottom_y < (paddle1.y + paddle1.height + 18)) {
       // hit the player's paddle
       this.x_speed = 10;
-      this.y_speed += (paddle1.y_speed/2);
+      this.y_speed += (paddle1.y_speed);
       this.x += this.x_speed;
     }
   } else {
-    if(left_x < (paddle2.x) && right_x > (paddle2.x + paddle2.width) && top_y > paddle2.y && bottom_y < (paddle2.y + paddle2.height)) {
+    if(left_x < (paddle2.x) && right_x > (paddle2.x + paddle2.width) && top_y > (paddle2.y-15) && bottom_y < (paddle2.y + paddle2.height+18)) {
       // hit the computer's paddle
       this.x_speed = -10;
       this.y_speed += (paddle2.y_speed / 2);
