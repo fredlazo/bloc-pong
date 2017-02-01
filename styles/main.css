@@ -1,5 +1,12 @@
 body {
     background-color: black;
+    
+}
+
+h1{
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5em;
 }
 
 canvas {

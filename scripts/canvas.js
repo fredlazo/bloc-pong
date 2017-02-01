@@ -1,6 +1,8 @@
 var canvas = document.getElementById("c");
 var context = canvas.getContext("2d");
 
+var score1 = 0;
+var score2 = 0;
 
 function Paddle(x, y,width, height) {
   this.x = x;
@@ -131,14 +133,32 @@ Ball.prototype.update = function(paddle1, paddle2){
     this.y_speed = -this.y_speed;
   }    
     
-  if(this.x < 0 || this.x > 1200) { // a point was scored
+    
+  if(this.x > 1200) { // Player scored
     /*this.x_speed = 5;
     this.y_speed = 5;*/
+   score1++;      
+   document.getElementById('score1').innerHTML = score1;       
   this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
   this.y_speed = 0;      
     this.x = 590;
     this.y = 290;
-  }    
+  }       
+    
+  if(this.x < 0) { // a point was scored
+    /*this.x_speed = 5;
+    this.y_speed = 5;*/
+   score2++;      
+   document.getElementById('score2').innerHTML = score2;       
+  this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
+  this.y_speed = 0;      
+    this.x = 590;
+    this.y = 290;
+  } 
+    
+  
+    
+    
 
   if(right_x < 600) {
     if(right_x > paddle1.x && left_x < (paddle1.x + paddle1.width) && top_y > (paddle1.y-15) && bottom_y < (paddle1.y + paddle1.height + 18)) {
