@@ -3,10 +3,36 @@ body {
     
 }
 
-h1{
+h1 {
     color: white;
     font-family: 'Press Start 2P', cursive;
     font-size: 5em;
+}
+
+hr {
+color: white;    
+}
+
+#lose {
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5em;
+    position:absolute;
+    left:400px;top:300px;    
+}
+
+#win {
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5em;
+    position:absolute;
+    left:400px;top:300px;    
+}
+
+
+#line{
+    border: 100px solid white;
+
 }
 
 canvas {

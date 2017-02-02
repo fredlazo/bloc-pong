@@ -4,6 +4,14 @@ var context = canvas.getContext("2d");
 var score1 = 0;
 var score2 = 0;
 
+var endGame = false;
+
+var lose = document.getElementById('lose');
+lose.style.visibility = 'hidden';
+
+var win = document.getElementById('win');
+win.style.visibility = 'hidden';
+
 function Paddle(x, y,width, height) {
   this.x = x;
   this.y = y;
@@ -34,15 +42,19 @@ var ball = new Ball(590, 290);
 
 
 var update = function() {
+
   player.update();
   computer.update(ball);    
   ball.update(player.paddle, computer.paddle);    
+    
 };
 
 var render = function() {
-  player.render();
-  computer.render();
-  ball.render();    
+    
+        player.render();
+        computer.render();
+        ball.render();
+    
 };
 
 var animate = window.requestAnimationFrame ||
@@ -54,10 +66,12 @@ var animate = window.requestAnimationFrame ||
 
 
 var step = function() {
-  context.clearRect(0, 0, canvas.width, canvas.height);    
-  update();    
-  render();     
-  animate(step);   
+    if (endGame == false){
+      context.clearRect(0, 0, canvas.width, canvas.height);    
+      update();    
+      render();     
+      animate(step);   
+    }
 };
 
 
@@ -138,28 +152,34 @@ Ball.prototype.update = function(paddle1, paddle2){
     /*this.x_speed = 5;
     this.y_speed = 5;*/
    score1++;      
-   document.getElementById('score1').innerHTML = score1;       
-  this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
-  this.y_speed = 0;      
-    this.x = 590;
-    this.y = 290;
+   document.getElementById('score1').innerHTML = score1;
+    if (score1 == 1){
+        endGame = true;
+        win.style.visibility = 'visible';      
+    }else{
+        this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
+        this.y_speed = 0;      
+        this.x = 590;
+        this.y = 290;
+    }
   }       
     
-  if(this.x < 0) { // a point was scored
+  if(this.x < 0) { // Computer scored
     /*this.x_speed = 5;
     this.y_speed = 5;*/
-   score2++;      
-   document.getElementById('score2').innerHTML = score2;       
-  this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
-  this.y_speed = 0;      
-    this.x = 590;
-    this.y = 290;
+      score2++;      
+      document.getElementById('score2').innerHTML = score2;
+    if (score2 == 2){
+        endGame = true;
+        lose.style.visibility = 'visible';
+    }else{    
+        this.x_speed = -(Math.floor(Math.random() * ((8-(5))+1) + 5)); //x speed (5 to 10)
+        this.y_speed = 0;      
+        this.x = 590;
+        this.y = 290;
+    }
   } 
     
-  
-    
-    
-
   if(right_x < 600) {
     if(right_x > paddle1.x && left_x < (paddle1.x + paddle1.width) && top_y > (paddle1.y-15) && bottom_y < (paddle1.y + paddle1.height + 18)) {
       // hit the player's paddle
